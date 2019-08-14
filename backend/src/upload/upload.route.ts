@@ -21,11 +21,13 @@ export class UploadRoute {
                 .send();
         }
 
-        const name = request.body.name;
+        // Retrieve the name from the request.
+        const { name } = request.body;
 
         // Check if the file is the correct type.
         const allowedImageTypes = ['jpg', 'jpeg', 'png', 'gif'];
 
+        // If the mime type is a known mimetype.
         const hasImageMime = allowedImageTypes.find(type => file.mimetype.includes(type));
 
         // We need to return here as the image provided isn't in the correct format.
@@ -39,10 +41,7 @@ export class UploadRoute {
         }
 
         // TODO: check for naughty things in the image uploaded.
-        const imageSearchAnnotations = await UploadProcessor.getImageAnnotations(file.path);
-
-        // Check if any of the values, other than spoof, don't equal VERY_UNLIKEY
-        const isImageNSFW = ["adult", "medical", "racy", "violence"].find(key => imageSearchAnnotations[key] !== 'VERY_UNLIKELY');
+        const isImageNSFW = await UploadProcessor.isImageNSFW(file.path);
 
         // If the image is nsfw we should exit here before doing any further stuff, and remove it from our fs.
         if (isImageNSFW) {
@@ -57,10 +56,12 @@ export class UploadRoute {
                 });
         }
 
+        // The newest filepath that represents where the file should move to.
         const newFilePath = path.join(this.publishDirectory, file.originalname);
 
         await fs.rename(file.path, newFilePath);
         
+        // The the exifdata on the image so we can store the author data there.
         if (name) {
             await UploadProcessor.setFileAuthor(newFilePath, name || '');
         }

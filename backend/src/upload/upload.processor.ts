@@ -40,6 +40,13 @@ export class UploadProcessor {
         return result.safeSearchAnnotation;
     }
 
+    async isImageNSFW(filePath: string) {
+        const imageSearchAnnotations = await this.getImageAnnotations(filePath);
+
+        return ["adult", "medical", "racy", "violence"]
+                .find(key => imageSearchAnnotations[key] !== 'VERY_UNLIKELY');
+    }
+
     /**
      * Returns the oldest file from a directory.
      * @param directoryPath The directory to search
