@@ -58,19 +58,22 @@ setInterval(cycleImages, 2000);
 
 
 async function cycleImages() {
-    
     const oldestFile = await UploadProcessor.getOldestFile(publishedUploadDirectory);
-    const currentTime = (new Date()).getTime();
 
-    console.log(currentTime - oldestFile.time > 10000);
-
-    if (currentTime - oldestFile.time > 10000) {
+    if (!oldestFile) {
         return;
     }
 
+    const currentTime = (new Date()).getTime();
 
+    const isOlderThanTimeout = (currentTime - oldestFile.time > 10000);
+
+    if (!isOlderThanTimeout) {
+        return;
+    }
 
     const nextFile = await UploadProcessor.getOldestFile(publishedUploadDirectory, 1);
+
 
     if (!nextFile) {
         return;
