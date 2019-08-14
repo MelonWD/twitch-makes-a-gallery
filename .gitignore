@@ -59,3 +59,11 @@ typings/
 
 # next.js build output
 .next
+
+
+
+# Testing (we won't have real tests for this... hopefully)
+**/test
+
+# Dist/Build files
+**/dist
