@@ -51,7 +51,7 @@ export class UploadProcessor {
      * Returns the oldest file from a directory.
      * @param directoryPath The directory to search
      */
-    async getOldestFile(directoryPath: string) {
+    async getOldestFile(directoryPath: string, index: number = 0) {
         let files: string[] | {
             name: string,
             time: number
@@ -74,7 +74,7 @@ export class UploadProcessor {
         });
 
         // Return the oldest file.
-        return files[0];
+        return files[index];
     }
 }
 

@@ -2,11 +2,15 @@
 import express, { Request, Response} from 'express';
 import path from 'path';
 import multer from 'multer';
+import { promises as fs } from 'fs';
 
 // Internal deps
 import UploadRoute from './upload/upload.route';
+import UploadProcessor from './upload/upload.processor';
 import envionment from './config/environment';
 import environment from './config/environment';
+
+
 
 // Load the configuration into the environment files.
 require('dotenv').config()
@@ -18,6 +22,9 @@ const imageUploadDirectory = path.join(__dirname, environment.UPLOAD_ROOT)
 const temporaryUploadDirectory = path.join(imageUploadDirectory, envionment.TEMPORARY_FOLDER_NAME)
 
 const publishedUploadDirectory = path.join(imageUploadDirectory, envionment.PUBLISHED_FOLDER_NAME);
+
+const archivedFolderName = path.join(imageUploadDirectory, envionment.ARCHIVED_FOLDER_NAME);
+
 
 // Create a new instance of express
 const app = express();
@@ -44,3 +51,30 @@ app.use('/images', express.static(publishedUploadDirectory));
 app.listen(applicationPort, () => {
     console.log(`Listening on port ${applicationPort}`);
 });
+
+
+// Use a simple setTimeout to control the time between image displays
+setInterval(cycleImages, 2000);
+
+
+async function cycleImages() {
+    
+    const oldestFile = await UploadProcessor.getOldestFile(publishedUploadDirectory);
+    const currentTime = (new Date()).getTime();
+
+    console.log(currentTime - oldestFile.time > 10000);
+
+    if (currentTime - oldestFile.time > 10000) {
+        return;
+    }
+
+
+
+    const nextFile = await UploadProcessor.getOldestFile(publishedUploadDirectory, 1);
+
+    if (!nextFile) {
+        return;
+    }
+
+    await fs.rename(path.join(publishedUploadDirectory, oldestFile.name), path.join(archivedFolderName, oldestFile.name));
+}
