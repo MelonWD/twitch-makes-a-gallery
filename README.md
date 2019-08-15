@@ -32,3 +32,19 @@ Uploading a file will place it within the `dist/upload` directory, original with
 The queue system work by moving these files between folders, once an image has been the oldest image within `published` for over 20 seconds, it will rotate the images and place the current displayed in `archived` and a new file will take its place.
 
 
+## Installation and Useage
+
+Please check the [node-exiftool](https://github.com/Sobesednik/node-exiftool#readme) README for information about exiftools and the dependencies required there.
+
+To install
+
+`npm install`
+
+To execute / start the application
+
+`npm start`
+
+This command will also invoke a `prestart` command which will compile the application from TypeScript to JavaScript.
+
+You will need to provide an `.env` file which contains a `GOOGLE_APPLICATION_CREDENTIALS` key pointing to a JSON Google Cloud Service account file, allowing the application to interface with Google Vision.
+
