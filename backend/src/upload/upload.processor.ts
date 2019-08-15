@@ -4,44 +4,67 @@ import path from 'path';
 import * as vision from '@google-cloud/vision';
 
 export class UploadProcessor {
-    async setFileAuthor(filepath: string, name: string) {
+    /**
+     * 
+     * @param filePath 
+     * @param name 
+     */
+    async setFileAuthor(filePath: string, name: string) {
         const ep = new exiftool.ExiftoolProcess();
 
         await ep.open();
 
-        return ep.writeMetadata(filepath, { Creator: name }, ['overwrite_original']);
+        // Write the name into the creator field within the exif data, replacing any
+        // content which may exist.
+        return ep.writeMetadata(filePath, { Creator: name }, ['overwrite_original']);
     }
 
-    async getFileAuthor(filepath: string) {
+    /**
+     * Retrieved the `Creator` field from the exifdata on the file.
+     * @param filePath A string representing the file path.
+     */
+    async getFileAuthor(filePath: string) {
         const ep = new exiftool.ExiftoolProcess();
 
         await ep.open();
 
-        const { data } = await ep.readMetadata(filepath, ['-File:all']);
+        const { data } = await ep.readMetadata(filePath, ['-File:all']);
 
+        // As exifdata may be an array, grab the first instance (as we didn't specify one in the write)
+        // and retrieve the creator from that.
         return data[0].Creator;
     }
 
-    async getImageAnnotations(imagePath: string) {
+    /**
+     * Retrieves the safe search annotations on the image.
+     * @param filePath A string representing the file path.
+     */
+    async getImageAnnotations(filePath: string) {
         const client = new vision.ImageAnnotatorClient();
 
+        // Object defining the request options,
+        // with the features being safe search.
         const request = {
             image: {
               source: {
-                  filename: imagePath
+                  filename: filePath
                 }
             },
             features: [{ type: 'SAFE_SEARCH_DETECTION' }]
           };
 
+        // Request and unpack the annotations for the image.
         const [result] = await client.annotateImage(request);
+
         return result.safeSearchAnnotation;
     }
 
+    /**
+     * Returns a boolean value based on the annotations returned by the image.
+     * @param filePath A string representing the file path.
+     */
     async isImageNSFW(filePath: string) {
         const imageSearchAnnotations = await this.getImageAnnotations(filePath);
-
-
 
         return ["adult", "medical", "racy", "violence"]
                 .find(key => {

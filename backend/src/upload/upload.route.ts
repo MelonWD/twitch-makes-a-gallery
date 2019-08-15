@@ -9,11 +9,12 @@ import environment from '../config/environment';
 // Class representing all the routes 
 export class UploadRoute {
     
+    // A string representing the path to the filesystem folder to store images.
     publishDirectory = path.join(__dirname, '..', environment.UPLOAD_ROOT, environment.PUBLISHED_FOLDER_NAME);
 
     async postImage(request: any, response: Response) {
-        // TODO: find a better name for this field.
-        const file = request.file;
+        // Retrieve the file from the request.
+        const { file, body } = request;
 
         if (!file) {
             return response
@@ -21,8 +22,8 @@ export class UploadRoute {
                 .send();
         }
 
-        // Retrieve the name from the request.
-        const { name } = request.body;
+        // Retrieve the name param from the body of the JSON.
+        const { name } = body;
 
         // Check if the file is the correct type.
         const allowedImageTypes = ['jpg', 'jpeg', 'png', 'gif'];
@@ -59,6 +60,7 @@ export class UploadRoute {
         // The newest filepath that represents where the file should move to.
         const newFilePath = path.join(this.publishDirectory, file.originalname);
 
+        // Move the file to the published directory.
         await fs.rename(file.path, newFilePath);
         
         // The the exifdata on the image so we can store the author data there.
@@ -70,12 +72,13 @@ export class UploadRoute {
     }    
 
     async getImage(request: any, response: Response) {
+        // Retrieve the current oldest from the published directory.
         const oldestFile = await UploadProcessor.getOldestFile(this.publishDirectory);
-
+        // The name of the author of the file, can be undefined.
         const authorName = await UploadProcessor.getFileAuthor(path.join(this.publishDirectory, oldestFile.name));
-
-        response.send({
-            file: `http://localhost:3000/images/${encodeURIComponent(oldestFile.name)}`,
+        // Respond with the file and the author so the information can be used on the front end.
+        return response.send({
+            file: `http://nathan.melon:3000/images/${encodeURIComponent(oldestFile.name)}`,
             author: authorName
         });
     }
