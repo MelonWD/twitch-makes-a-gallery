@@ -1,5 +1,6 @@
 // Application deps
 import express, { Request, Response} from 'express';
+import cors from 'cors';
 import path from 'path';
 import multer from 'multer';
 import { promises as fs } from 'fs';
@@ -37,6 +38,8 @@ const upload = multer({ dest: temporaryUploadDirectory })
 
 // Setup the JSON parser so we can retrieve JSON bodies sent.
 app.use(express.json());
+app.use(cors());
+
 
 // Endpoint for uploading an image
 app.post('/upload', upload.single('file'), UploadRoute.postImage.bind(UploadRoute));
