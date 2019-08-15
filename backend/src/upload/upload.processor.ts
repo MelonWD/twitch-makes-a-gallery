@@ -25,8 +25,6 @@ export class UploadProcessor {
     async getImageAnnotations(imagePath: string) {
         const client = new vision.ImageAnnotatorClient();
 
-        const v = vision;
-
         const request = {
             image: {
               source: {
@@ -43,8 +41,13 @@ export class UploadProcessor {
     async isImageNSFW(filePath: string) {
         const imageSearchAnnotations = await this.getImageAnnotations(filePath);
 
+
+
         return ["adult", "medical", "racy", "violence"]
-                .find(key => imageSearchAnnotations[key] !== 'VERY_UNLIKELY');
+                .find(key => {
+                    const value = imageSearchAnnotations[key];
+                    return value !== 'VERY_UNLIKELY';
+            });
     }
 
     /**
