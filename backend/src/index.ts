@@ -27,7 +27,7 @@ const archivedFolderName = path.join(imageUploadDirectory, environment.ARCHIVED_
 const app = express();
 
 // Listen to provided port or 3000
-const applicationPort = process.env.PORT || environment.port || 3000;
+const applicationPort = process.env.PORT || environment.port || 80;
 
 // Setup upload so we can retrieve uploaded files.
 const upload = multer({ dest: temporaryUploadDirectory })
