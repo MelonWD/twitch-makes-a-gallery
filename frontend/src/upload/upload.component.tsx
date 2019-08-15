@@ -102,13 +102,6 @@ export default class UploadComponent extends React.Component {
     }
 
 
-    // lastModified: 1565769846840
-    // lastModifiedDate: Wed Aug 14 2019 09:04:06 GMT+0100 (British Summer Time) {}
-    // name: "image url.jpg"
-    // path: "image url.jpg"
-    // size: 421854
-    // type: "image/jpeg"
-    // webkitRelativePath: ""
     onFileSubmit(files: any[]) {
         console.log(files);
         this.uploadedFile = files[0]
