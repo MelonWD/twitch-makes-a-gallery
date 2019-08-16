@@ -34,6 +34,13 @@ The queue system work by moving these files between folders, once an image has b
 
 ### Installation and Useage
 
+Create `.env` file, which contains the following:
+
+```
+GOOGLE_APPLICATION_CREDENTIALS=path/to/your/credientials/file.json
+
+```
+
 Please check the [node-exiftool](https://github.com/Sobesednik/node-exiftool#readme) README for information about exiftools and the dependencies required there.
 
 To install
