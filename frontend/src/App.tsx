@@ -8,13 +8,9 @@ import UploadComponent from './upload/upload.component';
 import UploadSuccessComponent from './upload/upload-success.component';
 import DisplayComponent from './display/display.component';
 
-import './App.scss';
+import './assets/scss/app.scss';
 
 const fileInput: any = React.createRef();
-const imgElement: any = React.createRef();
-let currentURL = 'https://as2.ftcdn.net/jpg/01/89/99/79/500_F_189997942_C12ZqPim1nZrKb4D3tC5uCUtw5yG4Go7.jpg'
-
-
 
 function App() {
   return (
@@ -29,9 +25,9 @@ function App() {
             </li>
           </ul>
         </nav>
-        <Route path="/" exact component={DisplayComponent} />
-        <Route path="/upload" component={UploadComponent} />
-        <Route path="/thanks" component={UploadSuccessComponent} />
+        <Route path="/" exact component={ DisplayComponent } />
+        <Route path="/upload" component={ UploadComponent } />
+        <Route path="/thanks" component={ UploadSuccessComponent } />
     </Router>
   );
 }

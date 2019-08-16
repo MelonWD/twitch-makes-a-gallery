@@ -1,4 +1,5 @@
 import axios from 'axios';
+import environment from './../environment';
 
 export class UploadDataService {
     
@@ -8,7 +9,7 @@ export class UploadDataService {
         formData.append("file", imageFile);
         formData.append("name", name);
 
-        return axios.post('http://nathan.melon:3000/upload', formData, {
+        return axios.post(`${environment.api_url}/upload`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -16,7 +17,7 @@ export class UploadDataService {
     }
 
     async getImage() {
-        return axios.get('http://nathan.melon:3000/image');
+        return axios.get(`${environment.api_url}/image`);
     }
 }
 
