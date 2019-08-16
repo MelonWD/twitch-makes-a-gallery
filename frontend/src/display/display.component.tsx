@@ -44,7 +44,7 @@ export default class DisplayComponent extends React.Component {
 
     render() {
         return (
-            <section>
+            <section className="section-display">
                 <h1>Current Image - Submitted by "{ this.state.currentName }"</h1>
                 <div>
                     <img src="" ref={this.imgElement} />
