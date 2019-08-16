@@ -59,6 +59,11 @@ export class UploadProcessor {
             name: string,
             time: number
         }[] = await fs.readdir(directoryPath);
+
+        files = files.filter(f => {
+            const extension = path.extname(f);
+            return ['.jpg', '.jpeg', '.png', '.gif'].includes(`${extension}`);
+        })
         
         // We need to retrieve all of the time values from the filesystem
         // as sort is required to be sync.

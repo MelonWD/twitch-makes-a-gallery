@@ -72,6 +72,13 @@ export class UploadRoute {
     async getImage(request: any, response: Response) {
         const oldestFile = await UploadProcessor.getOldestFile(this.publishDirectory);
 
+        if (!oldestFile) {
+            return response.send({
+                file:'https://www.melonwebdesign.co.uk/favicon-192x192.png',
+                author: 'Default image - submit one!'
+            });
+        }
+
         const authorName = await UploadProcessor.getFileAuthor(path.join(this.publishDirectory, oldestFile.name));
 
         response.send({
