@@ -1,5 +1,6 @@
 // Application deps
 import express, { Request, Response} from 'express';
+import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import path from 'path';
 import multer from 'multer';
@@ -26,30 +27,31 @@ const publishedUploadDirectory = path.join(imageUploadDirectory, envionment.PUBL
 
 const archivedFolderName = path.join(imageUploadDirectory, envionment.ARCHIVED_FOLDER_NAME);
 
-
+const limiter = rateLimit({
+    windowMs: 60, // 15 minutes
+    max: 5
+});
 // Create a new instance of express
 const app = express();
-
 // Listen to provided port or 3000
 const applicationPort = process.env.PORT || envionment.port || 3000;
-
 // Setup upload so we can retrieve uploaded files.
-const upload = multer({ dest: temporaryUploadDirectory })
-
+const upload = multer({ dest: temporaryUploadDirectory });
 // Setup the JSON parser so we can retrieve JSON bodies sent.
 app.use(express.json());
-app.use(cors());
-
-
+// Configure cors
+app.use(cors({
+    origin: '*',
+    optionsSuccessStatus: 200
+}));
+// Setup rate limiting on the API
+app.use('/upload', limiter);
 // Endpoint for uploading an image
 app.post('/upload', upload.single('file'), UploadRoute.postImage.bind(UploadRoute));
-
 // Endpoint for retrieving the currently active image.
 app.get('/image', UploadRoute.getImage.bind(UploadRoute));
-
 // Static route pointing to our published files folder.
 app.use('/images', express.static(publishedUploadDirectory));
-
 // Listen on the application port.
 app.listen(applicationPort, () => {
     console.log(`Listening on port ${applicationPort}`);
