@@ -12,19 +12,21 @@ export default class DisplayComponent extends React.Component {
 
 		this.setImage.bind(this);
 		this.state = {
-			currentName: ''
+			currentName: '',
+			hasImg: false
 		}
 	}
 
 	componentDidMount() {
 		this.timer = window.setInterval(async () => {
-			const { data } = await UploadDataService.getImage();
+			let { data } = await UploadDataService.getImage();
 
 			if (!data) {
 				return;
 			}
 
 			const image = data.file;
+			this.state.hasImg = true;
 
 			this.setImage(image);
 
@@ -43,14 +45,27 @@ export default class DisplayComponent extends React.Component {
 
 
 	render() {
+		let img, caption;
+
+		if (this.state.hasImg) {
+			img = <div className="sub-img">
+				<img src="" ref={this.imgElement} />
+			</div>
+		}
+		else {
+			img = <h1 className="sub-empty">Image loading...</h1>
+		}
+
+		if (this.state.currentName) {
+			caption = <div className="sub-caption">
+				<h1>{this.state.currentName}</h1>
+			</div>
+		}
+
 		return (
 			<section className="section-display">
-				<div className="sub-img">
-					<img src="" ref={this.imgElement} />
-				</div>
-				<div className="sub-caption">
-					<h1>Current Image - Submitted by "{this.state.currentName}"</h1>
-				</div>
+				{img}
+				{caption}
 			</section>
 		)
 	}
