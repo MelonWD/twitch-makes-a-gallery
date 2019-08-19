@@ -2,10 +2,10 @@
 	position: relative;
 
 	.sub-img {
-		width: 100%;
+		width: calc(100% - 60px);
 		height: calc(100vh - 90px);
 		padding-top: 30px;
-		margin-bottom: -20px;
+		margin: 0 auto -20px auto;
 		display: flex;
 		align-items: center;
 		justify-content: center;

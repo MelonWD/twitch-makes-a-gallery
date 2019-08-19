@@ -47,6 +47,14 @@ export default class UploadComponent extends React.Component {
 					<p className="lead">Upload your images to share them with us and everyone on Twitch!</p>
 				</div>
 				<form onSubmit={this.onSubmit}>
+					<p>Add your name, or a message to the stream:</p>
+					<div className="input-group input-group-lg">
+						<div className="input-group-prepend">
+							<span className="input-group-text">Message</span>
+						</div>
+						<input className="form-control" type="text" name="name" value={this.state.name} onChange={this.onInputChange} />
+					</div>
+					<br />
 					<p>Upload Your Image:</p>
 					<div className="form-group">
 						<p style={this.errorStyle}>{this.state.error}</p>
@@ -63,13 +71,6 @@ export default class UploadComponent extends React.Component {
 								</section>
 							)}
 						</Dropzone>
-					</div>
-					<p>Add your name, or a message to the stream:</p>
-					<div className="input-group input-group-lg">
-						<div className="input-group-prepend">
-							<span className="input-group-text">Message</span>
-						</div>
-						<input className="form-control" type="text" name="name" value={this.state.name} onChange={this.onInputChange} />
 					</div>
 					<button className="btn btn-lg btn-success btn-block">Submit</button>
 				</form>
