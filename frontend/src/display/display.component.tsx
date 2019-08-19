@@ -4,64 +4,66 @@ import UploadDataService from "../upload/upload.data-service";
 
 export default class DisplayComponent extends React.Component {
 
-    imgElement: any = React.createRef();
-    timer: number | undefined = undefined;
+	imgElement: any = React.createRef();
+	timer: number | undefined = undefined;
 
-    constructor(props: any, state: any) {
-        super(props, state);
+	constructor(props: any, state: any) {
+		super(props, state);
 
-        this.setImage.bind(this);
-        this.state = {
-            currentName: ''
-        }
-    }
+		this.setImage.bind(this);
+		this.state = {
+			currentName: ''
+		}
+	}
 
-    componentDidMount() {
-        this.timer = window.setInterval(async () => {
-            const { data } = await UploadDataService.getImage();
+	componentDidMount() {
+		this.timer = window.setInterval(async () => {
+			const { data } = await UploadDataService.getImage();
 
-            if (!data) {
-                return;
-            }
+			if (!data) {
+				return;
+			}
 
-            const image = data.file;
+			const image = data.file;
 
-            this.setImage(image);
+			this.setImage(image);
 
-            if (data.author) {
-                this.setState({
-                    currentName: data.author
-                })
-            }
+			if (data.author) {
+				this.setState({
+					currentName: data.author
+				})
+			}
 
-        }, 2000) as number;
-    }
+		}, 2000) as number;
+	}
 
-    componentWillUnmount() {
-        clearInterval(this.timer);
-    }
+	componentWillUnmount() {
+		clearInterval(this.timer);
+	}
 
 
-    render() {
-        return (
-            <section className="section-display">
-                <h1>Current Image - Submitted by "{ this.state.currentName }"</h1>
-                <div>
-                    <img src="" ref={this.imgElement} />
-                </div>
-            </section>
-        )
-    }
+	render() {
+		return (
+			<section className="section-display">
+				<div className="sub-img">
+					<img src="" ref={this.imgElement} />
+				</div>
+				<div className="sub-caption">
+					<h1>Current Image - Submitted by "{this.state.currentName}"</h1>
+				</div>
+			</section>
+		)
+	}
 
-    setImage(imageURL: string) {
-        if (!this.imgElement.current) {
-            return;
-        }
+	setImage(imageURL: string) {
+		if (!this.imgElement.current) {
+			return;
+		}
 
-        if (this.imgElement.current.src === imageURL) {
-            return;
-        }
+		if (this.imgElement.current.src === imageURL) {
+			return;
+		}
 
-        this.imgElement.current.src = imageURL;
-    }
+		this.imgElement.current.src = imageURL;
+	}
 }

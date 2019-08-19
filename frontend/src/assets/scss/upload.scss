@@ -1,0 +1,61 @@
+nav {
+	display: none;
+}
+
+.section-upload {
+	max-width: 900px;
+	padding: 2em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	.sub-intro {
+		margin: 2em 0 4em;
+		text-align: center;
+
+		h1 {
+			margin-bottom: 0.5em;
+		}
+	}
+
+	h3 {
+		margin: 0 0 1em;
+	}
+
+	.sub-dropper {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		border-width: 2px;
+		border-radius: 2px;
+		border-style: dotted;
+		background-color: rgba(200, 200, 200, 0.1);
+		color: #ffffff;
+		outline: none;
+		transition: border .24s ease-in-out;
+
+		p {
+			margin: 50px 0;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		.sub-thumbs {
+			position: relative;
+			top: -122px;
+
+			img {
+				max-width: 100%;
+				margin-bottom: -122px;
+			}
+		}
+	}
+
+	.input-group-text {
+		color: white;
+	}
+
+	.btn-success {
+		margin-top: 1em;
+	}
+}
