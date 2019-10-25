@@ -4,7 +4,6 @@
 
 We're currently working on an internet photo frame where users can submit images to have them displayed on a monitor to everyone in our office. All images displayed will be curated into a gallery.
 
-[**Github Source**](https://github.com/MelonWD/twitch-makes-a-gallery)  (you may need to switch branch until we merge to master)
 
 ## Who are we
 
@@ -14,7 +13,7 @@ In our downtime we think of fun projects and sometimes we make them, If we're st
 
 **You can find more about us  [on our website](https://www.melonwebdesign.co.uk/about/)**
 
-**All of our projects can be viewed on[https://twitchmakes.com/](https://twitchmakes.com/)**
+**All of our projects can be viewed on [https://twitchmakes.com/](https://twitchmakes.com/)**
 
 
 ## Frontend
